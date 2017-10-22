@@ -1,5 +1,6 @@
 package com.maxiaogang.sprider.strategy.impl;
 
+import com.maxiaogang.sprider.strategy.HttpResponseStrategy;
 import com.maxiaogang.sprider.strategy.HttpStatusStrategy;
 import com.sun.tools.javac.util.Assert;
 import org.apache.http.HttpResponse;
@@ -12,6 +13,7 @@ import java.io.*;
 /**
  * 对HTTP状态为200的结果进行处理
  */
+@HttpResponseStrategy
 public class HttpStatus200Strategy implements HttpStatusStrategy {
 
     private static Logger logger = LoggerFactory.getLogger(HttpStatus200Strategy.class);

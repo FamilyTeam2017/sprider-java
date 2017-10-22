@@ -1,6 +1,8 @@
 package com.maxiaogang.sprider.impl;
 
 import com.maxiaogang.sprider.FetchTool;
+import com.maxiaogang.sprider.core.HttpStatusDispatcher;
+import com.maxiaogang.sprider.core.impl.HttpStatusDispatcherImpl;
 import com.sun.tools.javac.util.Assert;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.io.*;
 public class FetchToolImpl implements FetchTool{
 
     private static Logger logger = LoggerFactory.getLogger(FetchToolImpl.class);
+    private HttpStatusDispatcher dispatcher = new HttpStatusDispatcherImpl();
 
     public synchronized File fetchPage(String urlPath, String filePath) {
         logger.info("urlPath:{},filePath:{}", urlPath, filePath);
@@ -32,29 +35,8 @@ public class FetchToolImpl implements FetchTool{
             HttpResponse response = httpClient.execute(httpGet);
             Assert.check(response != null);
             Assert.check(response.getStatusLine() != null);
-            int status = response.getStatusLine().getStatusCode();
-            if(status == HttpStatus.SC_OK){
-                int tempByte = -1;
-                InputStream inputStream = response.getEntity().getContent();
-                FileOutputStream outputStream = null;
-                try {
-                    outputStream = new FileOutputStream(resultFile);
-                } catch (FileNotFoundException e) {
-                    logger.error("文件不存在.", e);
-                }
-                while ((tempByte=inputStream.read()) > 0){
-                    outputStream.write(tempByte);
-                }
-                //关闭输入输出流
-                inputStream.close();
-                if (outputStream != null){
-                    outputStream.close();
-                }
-            }else {
-                logger.info("path:{};status:{}", urlPath, status);
-                return null;
-            }
-
+            //独立处理response
+            dispatcher.doDispatcher(response.getStatusLine().getStatusCode());
         } catch (IOException e) {
             logger.error("http执行失败", e);
         }

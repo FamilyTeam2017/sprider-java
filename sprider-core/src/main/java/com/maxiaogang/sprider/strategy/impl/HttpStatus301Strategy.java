@@ -1,5 +1,6 @@
 package com.maxiaogang.sprider.strategy.impl;
 
+import com.maxiaogang.sprider.strategy.HttpResponseStrategy;
 import com.maxiaogang.sprider.strategy.HttpStatusStrategy;
 import com.sun.tools.javac.util.Assert;
 import org.apache.http.Header;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
  * 301状态处理
  * 302状态处理
  */
+@HttpResponseStrategy
 public class HttpStatus301Strategy implements HttpStatusStrategy{
 
     private static Logger logger = LoggerFactory.getLogger(HttpStatus301Strategy.class);
