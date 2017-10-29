@@ -11,6 +11,7 @@
     <modules>
         <module>sprider-demo</module>
         <module>sprider-core</module>
+        <module>sprider-web</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
